@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# setup.sh — Ubuntu 24.04 server terminal environment bootstrapper
+# server-setup — Ubuntu terminal environment bootstrapper
 #
 # Updates the system, installs a curated set of modern terminal tools, wires
 # them into bash, and (optionally) reboots once at the end.
@@ -243,12 +243,10 @@ preflight() {
     # shellcheck disable=SC1091
     . /etc/os-release
   fi
-  if [ "${ID:-}" != "ubuntu" ]; then
-    warn "This does not look like Ubuntu (ID=${ID:-unknown}). Proceeding anyway."
-  elif [ "${VERSION_ID:-}" != "24.04" ]; then
-    warn "Expected Ubuntu 24.04 but found ${VERSION_ID:-unknown}. Proceeding anyway."
+  if [ "${ID:-}" != "ubuntu" ] && [[ ",${ID_LIKE:-}," != *",ubuntu,"* ]]; then
+    warn "This does not look like Ubuntu (ID=${ID:-unknown}). Proceeding anyway, but apt sources are tuned for Ubuntu."
   else
-    ok "Ubuntu ${VERSION_ID} detected."
+    ok "Ubuntu ${VERSION_ID:-} detected."
   fi
 
   case "$(uname -m)" in
@@ -368,7 +366,9 @@ install_gh_tools() {
 # Phase 5: shell integration (managed block in ~/.bashrc)
 # ---------------------------------------------------------------------------
 bashrc_block() {
-  cat <<'BLOCK'
+  # Single-quoted heredoc keeps $HOME/$(...) literal for runtime; @TOKENS@ are
+  # substituted here so script-time config (e.g. BAT_THEME_NAME) lands in the file.
+  cat <<'BLOCK' | sed "s|@BAT_THEME@|${BAT_THEME_NAME}|g"
 # >>> server-setup >>>
 # Managed by setup.sh — do not edit between these markers (re-run regenerates).
 
@@ -380,7 +380,7 @@ esac
 
 export EDITOR=nvim
 export VISUAL=nvim
-export BAT_THEME="TwoDark"
+export BAT_THEME="@BAT_THEME@"
 
 # fzf options
 export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border --info=inline"
@@ -527,6 +527,15 @@ maybe_reboot() {
   fi
 
   section "Reboot"
+  # Only offer an interactive cancel when stdin is a terminal. A non-interactive
+  # run (e.g. piped from curl) has no keyboard, so 'read -t' would return failure
+  # instantly and reboot with no chance to abort — require an explicit countdown.
+  if [ ! -t 0 ]; then
+    warn "Non-interactive session — not rebooting automatically to avoid surprises."
+    ok "Reboot manually when ready: ${C_BOLD}$SUDO reboot${C_RESET}"
+    return 0
+  fi
+
   printf '%sRebooting in 10 seconds — press any key to cancel...%s ' "$C_YELLOW" "$C_RESET"
   if read -rs -n1 -t 10 _key; then
     printf '\n'

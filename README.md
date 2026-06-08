@@ -1,8 +1,8 @@
-# ubuntu-setup
+# server-setup
 
-One idempotent script that turns a fresh **Ubuntu 24.04** server into a comfortable
+One idempotent script that turns a fresh **Ubuntu** server into a comfortable
 terminal: updates the system, installs modern CLI tools, wires them into `bash`, and
-optionally reboots once at the end.
+optionally reboots once at the end. Built and tested on Ubuntu 24.04 LTS.
 
 ## Usage
 
