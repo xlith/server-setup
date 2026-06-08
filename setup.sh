@@ -280,7 +280,7 @@ system_update() {
 # ---------------------------------------------------------------------------
 # Phase 2: tools from the standard Ubuntu repositories
 # ---------------------------------------------------------------------------
-APT_TOOLS=(fzf ripgrep jq bat fd-find zoxide ncdu duf btop httpie tealdeer)
+APT_TOOLS=(fzf ripgrep jq bat fd-find zoxide ncdu duf btop httpie)
 
 install_apt_tools() {
   section "Installing apt tools"
@@ -357,6 +357,7 @@ install_gh_tools() {
   install_gh_tarball bandwhich imsnif/bandwhich     "bandwhich-.*-${RUST_ARCH}-unknown-linux-musl\.tar\.gz$"  bandwhich || true
   install_gh_tarball yazi      sxyazi/yazi          "yazi-${RUST_ARCH}-unknown-linux-musl\.zip$"              yazi ya   || true
   install_gh_tarball atuin     atuinsh/atuin        "atuin-.*${RUST_ARCH}-unknown-linux-gnu\.tar\.gz$"        atuin     || true
+  install_gh_tarball tlrc      tldr-pages/tlrc      "tlrc-.*-${RUST_ARCH}-unknown-linux-musl\.tar\.gz$"       tldr      || true
 
   # .deb package
   install_gh_deb     git-delta dandavison/delta     "git-delta_.*_${DEB_ARCH}\.deb$"                          delta     || true

@@ -56,7 +56,7 @@ Runs as **root** or any **sudo-capable user**. Safe to re-run.
     <tr><th colspan="2" align="left">Misc</th></tr>
     <tr><td><a href="https://github.com/zellij-org/zellij">zellij</a></td><td>Terminal multiplexer &amp; workspace</td></tr>
     <tr><td><a href="https://github.com/httpie/cli">HTTPie</a></td><td>Human-friendly HTTP client</td></tr>
-    <tr><td><a href="https://github.com/dbrgn/tealdeer">tealdeer</a></td><td>Fast <code>tldr</code> example pages</td></tr>
+    <tr><td><a href="https://github.com/tldr-pages/tlrc">tlrc</a></td><td>Official <code>tldr</code> client — concise example pages</td></tr>
   </tbody>
 </table>
 
