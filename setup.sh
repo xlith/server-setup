@@ -303,8 +303,14 @@ ensure_local_symlinks() {
 install_repo_tools() {
   section "Installing Neovim (unstable PPA) and eza"
 
-  info "Adding neovim-ppa/unstable..."
-  $SUDO add-apt-repository -y ppa:neovim-ppa/unstable || warn "could not add Neovim PPA"
+  # Only add the PPA if it isn't already configured (covers both legacy .list
+  # and the deb822 .sources format add-apt-repository writes on 24.04+).
+  if grep -rqs "neovim-ppa/unstable" /etc/apt/sources.list.d/ 2>/dev/null; then
+    info "Neovim PPA already configured."
+  else
+    info "Adding neovim-ppa/unstable..."
+    $SUDO add-apt-repository -y ppa:neovim-ppa/unstable || warn "could not add Neovim PPA"
+  fi
 
   if [ ! -f /etc/apt/sources.list.d/gierens.list ]; then
     info "Adding eza apt repository..."
