@@ -357,7 +357,7 @@ install_gh_tools() {
 
   # Single-binary tarballs / zips
   install_gh_tarball zellij    zellij-org/zellij    "zellij-${RUST_ARCH}-unknown-linux-musl\.tar\.gz$"        zellij    || true
-  install_gh_tarball lazygit   jesseduffield/lazygit "lazygit_.*_Linux_${LAZYGIT_ARCH}\.tar\.gz$"            lazygit   || true
+  install_gh_tarball lazygit   jesseduffield/lazygit "lazygit_.*_[Ll]inux_${LAZYGIT_ARCH}\.tar\.gz$"         lazygit   || true
   install_gh_tarball dust      bootandy/dust        "dust-.*-${RUST_ARCH}-unknown-linux-gnu\.tar\.gz$"        dust      || true
   install_gh_tarball procs     dalance/procs        "procs-.*-${RUST_ARCH}-linux\.zip$"                       procs     || true
   install_gh_tarball bandwhich imsnif/bandwhich     "bandwhich-.*-${RUST_ARCH}-unknown-linux-musl\.tar\.gz$"  bandwhich || true
