@@ -63,6 +63,48 @@ Runs as **root** or any **sudo-capable user**. Safe to re-run.
 Key bindings: `Ctrl-R` atuin · `Ctrl-T` fzf files · `Alt-C` fzf cd · `z`/`zi` zoxide.
 Aliases apply to interactive shells only; `find`, `ps`, and `cd` are left untouched.
 
+## Removing tools
+
+Tools are installed three ways; remove them according to where they came from.
+
+**apt packages** (fzf, ripgrep, jq, bat, fd, zoxide, ncdu, duf, btop, httpie, neovim, eza) — and `git-delta`, which installs as a `.deb`:
+
+```bash
+sudo apt-get remove --purge -y <package>     # e.g. ripgrep, neovim, eza, git-delta
+sudo apt-get autoremove --purge -y
+```
+
+> `bat` is the `bat` package (binary `batcat`), `fd` is `fd-find` (binary `fdfind`).
+> Also delete the `~/.local/bin/bat` and `~/.local/bin/fd` symlinks if you remove those.
+
+**Standalone binaries** in `/usr/local/bin` (zellij, lazygit, dust, procs, bandwhich, yazi, atuin, tlrc) — and oh-my-posh in `~/.local/bin`:
+
+```bash
+sudo rm -f /usr/local/bin/{zellij,lazygit,dust,procs,bandwhich,yazi,ya,atuin,tldr}
+rm -f ~/.local/bin/oh-my-posh
+```
+
+**Remove everything this script added** (tools + shell integration):
+
+```bash
+# 1. Delete the managed block from ~/.bashrc (between the markers)
+sed -i '/# >>> server-setup >>>/,/# <<< server-setup <<</d' ~/.bashrc
+
+# 2. Drop the helper/config files it created
+rm -rf ~/.bash-preexec.sh ~/.config/oh-my-posh ~/.config/server-setup
+
+# 3. Undo the git-delta pager config
+git config --global --unset core.pager
+git config --global --unset interactive.diffFilter
+
+# 4. Remove the added apt sources, then remove the packages as shown above
+sudo add-apt-repository -r -y ppa:neovim-ppa/unstable
+sudo rm -f /etc/apt/sources.list.d/gierens.list /etc/apt/keyrings/gierens.gpg
+sudo apt-get update
+```
+
+Run `exec bash` afterwards to reload your shell.
+
 ## Notes
 
 - **Nerd Font needed for icons** — the prompt, eza, and btop render glyphs using
