@@ -19,7 +19,7 @@ set -euo pipefail
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-OMP_THEME="${OMP_THEME:-jandedobbeleer}"        # oh-my-posh theme (from upstream themes/)
+OMP_THEME="${OMP_THEME:-clean-detailed}"        # oh-my-posh theme (from upstream themes/)
 BAT_THEME_NAME="${BAT_THEME_NAME:-TwoDark}"     # bundled bat theme
 VERSIONS_FILE="$HOME/.config/server-setup/versions.env"
 LOCAL_BIN="$HOME/.local/bin"
